@@ -12,7 +12,7 @@ jobs:
     container: rootproject/root:6.26.10-conda
     steps:
       - name: checkout repository
-        use: actions/checkout@v4
+        uses: actions/checkout@v4
       - name: build
         run: |
               COMPILER=$(root-config --cxx)
