@@ -27,6 +27,7 @@ jobs:
           $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
       - uses: actions/upload-artifact@v4
         with:
+          name: 6.26.10-conda
           path: skim
 
 
@@ -41,6 +42,8 @@ jobs:
         - uses: actions/download-artifact@v4
           with:
             name: skim6.26.10-conda
-            
+
         - name: skim
-          run: ./skim
+          run: |
+            chmod +x ./skim
+            ./skim
