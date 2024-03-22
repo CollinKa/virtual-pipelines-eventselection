@@ -9,12 +9,19 @@ jobs:
 
   build_skim:
     runs-on: ubuntu-latest
-    container: rootproject/root:6.26.10-conda
+    defaults:
+      run:
+        shell: bash -el {0}
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
+      - name: Install ROOT
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-name: env
+          create-args: root
       - name: build
         run: |
-              COMPILER=$(root-config --cxx)
-              FLAGS=$(root-config --cflags --libs)
-              $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
+          COMPILER=$(root-config --cxx)
+          FLAGS=$(root-config --cflags --libs)
+          $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
