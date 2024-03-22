@@ -6,43 +6,19 @@ jobs:
     steps:
       - run: echo hello world
   
-  
+  cmssw_compile:
+    tags:
+      - cvmfs
+    variables:
+      CMS_PATH: /cvmfs/cms.cern.ch
+      CMSSW_RELEASE: CMSSW_10_6_8_patch1
+    script:
+      - shopt -s expand_aliases
+      - set +u && source ${CMS_PATH}/cmsset_default.sh; set -u
+      - cmsrel ${CMSSW_RELEASE}
+      - cd ${CMSSW_RELEASE}/src
+      - cmsenv
+      - mkdir -p AnalysisCode
+      - cp -r "${CI_PROJECT_DIR}/ZPeakAnalysis" "${CMSSW_BASE}/src/AnalysisCode/"
+      - scram b
 
-  build_skim:
-    needs: greeting
-    runs-on: ubuntu-latest
-    container: rootproject/root:${{ matrix.version }}
-    strategy:
-      matrix:
-        version: [6.26.10-conda, latest]
-    steps:
-      - name: checkout repository
-        uses: actions/checkout@v4
-
-      - name: build
-        run: |
-          COMPILER=$(root-config --cxx)
-          FLAGS=$(root-config --cflags --libs)
-          $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
-      - uses: actions/upload-artifact@v4
-        with:
-          name: skim${{ matrix.version }}
-          path: skim
-
-
-  skim:
-    needs: build_skim
-    runs-on: ubuntu-latest
-    container: rootproject/root:6.26.10-conda
-    steps:
-        - name: checkout repository
-          uses: actions/checkout@v4
-        
-        - uses: actions/download-artifact@v4
-          with:
-            name: skim6.26.10-conda
-
-        - name: skim
-          run: |
-            chmod +x ./skim
-            ./skim root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
