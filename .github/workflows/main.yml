@@ -22,9 +22,10 @@ jobs:
           create-args: root
       
       - name: Install cvmfx
-        - run: |
-              sudo yum install https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
-              sudo yum install -y cvmfs
+        run: |
+          sudo yum install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
+          sudo yum install -y cvmfs
+
         
 
 
