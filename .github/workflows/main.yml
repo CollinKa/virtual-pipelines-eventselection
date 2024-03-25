@@ -6,6 +6,29 @@ jobs:
     steps:
       - run: echo hello world
   
+  setUpContainer:
+    needs: greeting
+    runs-on: ubuntu-latest
+    container: rootproject/root:6.26.10-conda
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install ROOT
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-name: env
+          create-args: root
+      
+      - name: Install cvmfx
+        - run: |
+              sudo yum install https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
+              sudo yum install -y cvmfs
+        
+
+
+
   cmssw_compile:
     tags:
       - cvmfs
