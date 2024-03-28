@@ -23,16 +23,7 @@ jobs:
       
       - name: Install cvmfx
         run: |
-          sudo apt-get install curl
-          
-          curl https://ecsft.cern.ch/dist/cvmfs/cvmfs-2.11.2/cvmfs-service-2.11.2-1.x86_64.docker.tar.gz | docker load
-          docker run -d --rm \
-            -e CVMFS_CLIENT_PROFILE=single \
-            -e CVMFS_REPOSITORIES=sft.cern.ch,... \
-            --cap-add SYS_ADMIN \
-            --device /dev/fuse \
-            --volume /cvmfs:/cvmfs:shared \
-            cvmfs/service:2.11.2-1
+          dpkg -i --root=~/local cvmfs_2.11.2~1+ubuntu22.04_amd64.deb
 
         
 
