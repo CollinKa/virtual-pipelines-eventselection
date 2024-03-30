@@ -1,0 +1,16 @@
+stages:
+  - setup
+  - compile
+  - offlineProduction
+  - analysis
+
+variables:
+    DOCKER_IMAGE: carriganm95/milliqan_uproot:latest
+  
+setup:
+    image: $CI_REGISTRY_IMAGE
+    stage: compile
+    rules:
+        - if: $CI_PIPELINE_SOURCE != "schedule"
+    variables:
+        GIT_SUBMODULE_STRATEGY: recursive
