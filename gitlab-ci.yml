@@ -1,6 +1,3 @@
-tags:
-  - cvmfs
-
 cmssw_setup:
   tags:
     - cvmfs
